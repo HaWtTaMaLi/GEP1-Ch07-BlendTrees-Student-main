@@ -8,22 +8,38 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D playerRb;
 
+    [SerializeField] private Animator playerAnimController;
 
-
-
-
+    private int MoveInputXHash = Animator.StringToHash("MoveInputX");
+    private int MoveInputYHash = Animator.StringToHash("MoveInputY");
+    private int isMovingHash = Animator.StringToHash("isMoving");
 
     private void Awake()
     {
         playerRb = GetComponent<Rigidbody2D>();
         if (playerRb == null) Debug.LogError("Rigidbody2D component not found on the player object.");
 
+        playerAnimController = GetComponentInChildren<Animator>();
     }
-
 
     private void Update()
     {
+        HandlePlayerAnimations();
+    }
 
+    public void HandlePlayerAnimations()
+    {
+        if (moveInput != Vector2.zero)
+        {
+            playerAnimController.SetFloat(MoveInputXHash, moveInput.x);
+            playerAnimController.SetFloat(MoveInputYHash, moveInput.y);
+
+            playerAnimController.SetBool(isMovingHash, true);
+        }
+        else
+        {
+            playerAnimController.SetBool(isMovingHash, false);
+        }
     }
 
     private void FixedUpdate()
@@ -45,10 +61,6 @@ public class PlayerController : MonoBehaviour
     {
         playerRb.MovePosition(playerRb.position + moveInput * moveSpeed * Time.fixedDeltaTime);
     }
-
-
-
-
 
 }
 
