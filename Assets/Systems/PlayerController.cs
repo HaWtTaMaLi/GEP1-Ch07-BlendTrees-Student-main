@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     private int MoveInputXHash = Animator.StringToHash("MoveInputX");
     private int MoveInputYHash = Animator.StringToHash("MoveInputY");
     private int isMovingHash = Animator.StringToHash("isMoving");
+    private int LastMoveXHash = Animator.StringToHash("LastMoveX");
+    private int LastMoveYHash = Animator.StringToHash("LastMoveY");
 
     private void Awake()
     {
@@ -25,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandlePlayerAnimations();
+        HandlePlayerAnimDirection();
     }
 
     public void HandlePlayerAnimations()
@@ -39,6 +42,15 @@ public class PlayerController : MonoBehaviour
         else
         {
             playerAnimController.SetBool(isMovingHash, false);
+        }
+    }
+
+    public void HandlePlayerAnimDirection()
+    {
+        if (moveInput != Vector2.zero)
+        {
+            playerAnimController.SetFloat(LastMoveXHash, moveInput.x);
+            playerAnimController.SetFloat(LastMoveYHash, moveInput.y);
         }
     }
 
